@@ -12,6 +12,8 @@ spec:
       restartPolicy: Never            # Não reinicia o pod se falhar (Job gerencia retries)
       containers:
         - name: init-db
+          securityContext:
+            allowPrivilegeEscalation: false
           image: devsecops-app:local  # Mesma imagem da app (tem o script init-db.js)
           command: ["node", "src/init-db.js"]  # Sobrescreve o CMD do Dockerfile
           envFrom:                    # Carrega TODAS as variáveis do ConfigMap
