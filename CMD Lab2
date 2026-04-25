@@ -1,0 +1,259 @@
+isisv@DELLPRO16:~/security-lab$ nvm --version
+Command 'nvm' not found, but there are 14 similar ones.
+isisv@DELLPRO16:~/security-lab$ git --version
+git version 2.43.0
+isisv@DELLPRO16:~/security-lab$ docker --version
+Docker version 29.4.0, build 9d7ad9f
+isisv@DELLPRO16:~/security-lab$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 16555  100 16555    0     0  41633      0 --:--:-- --:--:-- --:--:-- 41700
+=> Downloading nvm from git to '/home/isisv/.nvm'
+=> Cloning into '/home/isisv/.nvm'...
+remote: Enumerating objects: 427, done.
+remote: Counting objects: 100% (427/427), done.
+remote: Compressing objects: 100% (353/353), done.
+remote: Total 427 (delta 60), reused 189 (delta 46), pack-reused 0 (from 0)
+Receiving objects: 100% (427/427), 414.64 KiB | 2.59 MiB/s, done.
+Resolving deltas: 100% (60/60), done.
+* (HEAD detached at FETCH_HEAD)
+  master
+=> Compressing and cleaning up git repository
+
+=> Appending nvm source string to /home/isisv/.bashrc
+=> Appending bash_completion source string to /home/isisv/.bashrc
+npm error code ENOENT
+npm error syscall lstat
+npm error path C:\Users\isisv\AppData\Roaming\npm
+npm error errno -4058
+npm error enoent ENOENT: no such file or directory, lstat 'C:\Users\isisv\AppData\Roaming\npm'
+npm error enoent This is related to npm not being able to find a file.
+npm error enoent
+npm error A complete log of this run can be found in: C:\Users\isisv\AppData\Local\npm-cache\_logs\2026-04-25T14_50_25_751Z-debug-0.log
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+isisv@DELLPRO16:~/security-lab$ source ~/.bashrc
+isisv@DELLPRO16:~/security-lab$ nvm --version
+0.39.7
+isisv@DELLPRO16:~/security-lab$ nvm use 22
+N/A: version "v22" is not yet installed.
+
+You need to run `nvm install 22` to install and use it.
+isisv@DELLPRO16:~/security-lab$ nvm install 22
+Downloading and installing node v22.22.2...
+Downloading https://nodejs.org/dist/v22.22.2/node-v22.22.2-linux-x64.tar.xz...
+################################################################################################################# 100.0%
+Computing checksum with sha256sum
+Checksums matched!
+Now using node v22.22.2 (npm v10.9.7)
+Creating default alias: default -> 22 (-> v22.22.2)
+isisv@DELLPRO16:~/security-lab$ nvm use 22
+Now using node v22.22.2 (npm v10.9.7)
+isisv@DELLPRO16:~/security-lab$ gh auth login
+Command 'gh' not found, but can be installed with:
+sudo snap install gh  # version 2.86.0-112-gc30647b78, or
+sudo apt  install gh  # version 2.45.0-1ubuntu0.3
+See 'snap info gh' for additional versions.
+isisv@DELLPRO16:~/security-lab$ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
+sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+[sudo] password for isisv:
+8+1 records in
+8+1 records out
+4528 bytes (4.5 kB, 4.4 KiB) copied, 6.2902e-05 s, 72.0 MB/s
+isisv@DELLPRO16:~/security-lab$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+isisv@DELLPRO16:~/security-lab$ sudo apt update
+Get:1 https://cli.github.com/packages stable InRelease [3917 B]
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Get:3 https://aquasecurity.github.io/trivy-repo/deb noble InRelease [3235 B]
+Hit:4 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:5 https://cli.github.com/packages stable/main amd64 Packages [357 B]
+Hit:6 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:7 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Fetched 7509 B in 1s (5473 B/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+All packages are up to date.
+isisv@DELLPRO16:~/security-lab$ sudo apt install gh -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  gh
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 14.4 MB of archives.
+After this operation, 40.2 MB of additional disk space will be used.
+Get:1 https://cli.github.com/packages stable/main amd64 gh amd64 2.91.0 [14.4 MB]
+Fetched 14.4 MB in 1s (16.3 MB/s)
+Selecting previously unselected package gh.
+(Reading database ... 40825 files and directories currently installed.)
+Preparing to unpack .../archives/gh_2.91.0_amd64.deb ...
+Unpacking gh (2.91.0) ...
+Setting up gh (2.91.0) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+isisv@DELLPRO16:~/security-lab$ gh --version
+gh version 2.91.0 (2026-04-22)
+https://github.com/cli/cli/releases/tag/v2.91.0
+isisv@DELLPRO16:~/security-lab$ gh auth login
+? Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 3EA8-6C32
+Press Enter to open https://github.com/login/device in your browser...
+/usr/bin/x-www-browser: 12: xdg-settings: not found
+[23938:23938:0425/115440.893090:ERROR:dbus/object_proxy.cc:572] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.UPower was not provided by any .service files
+
+(chrome:23938): IBUS-WARNING **: 11:54:42.130: Failed to mkdir /home/isisv/snap/chromium/3423/.config/ibus/bus: Not a directory
+[23938:24055:0425/115445.197420:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[23938:24055:0425/115504.180495:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[23938:24055:0425/115545.511690:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[23938:24055:0425/115708.158433:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[23938:23938:0425/120022.621578:ERROR:mojo/public/cpp/bindings/lib/interface_endpoint_client.cc:748] Message 5 rejected by interface blink.mojom.WidgetHost
+[23938:24055:0425/120043.407501:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[23938:23938:0425/120138.592844:ERROR:mojo/public/cpp/bindings/lib/interface_endpoint_client.cc:748] Message 5 rejected by interface blink.mojom.WidgetHost
+[23938:23938:0425/120152.539282:ERROR:mojo/public/cpp/bindings/lib/interface_endpoint_client.cc:748] Message 5 rejected by interface blink.mojom.WidgetHost
+[23938:24055:0425/120626.653743:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+failed to authenticate via web browser: This 'device_code' has expired. (expired_token)
+isisv@DELLPRO16:~/security-lab$ gh auth login
+? Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Paste an authentication token
+Tip: you can generate a Personal Access Token here https://github.com/settings/tokens
+The minimum required scopes are 'repo', 'read:org', 'workflow'.
+? Paste your authentication token: ****************************************
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+! Authentication credentials saved in plain text
+✓ Logged in as isisvsabreu
+isisv@DELLPRO16:~/security-lab$ gh repo list
+
+Showing 7 of 7 repositories in @isisvsabreu
+
+NAME                                          DESCRIPTION                                                         INFO          UPDATED
+isisvsabreu/Tech-Lead---DevSecOps---2025.02   Tech Lead - DevSecOps - 2025.02                                     public        about 49 minutes ago
+isisvsabreu/Tech-Lead---Dados-e-IA-2025.02                                                                        public        about 1 month ago
+isisvsabreu/SistemaDeFuncionarios             Sistema de Funcionários em Java com integração ao SQL Server        public        about 5 years ago
+isisvsabreu/An-lise-e-Projeto-de-Algoritmos                                                                       private       about 6 years ago
+isisvsabreu/ParoquiaSaoGoncalodoRetiro                                                                            public        about 8 years ago
+isisvsabreu/paroquiasgr                       Aplicativo da Paróquia São Gonçalo do Retiro em fase de construção  public        about 8 years ago
+isisvsabreu/ionic3-angular5-search-sort-list  The example of Ionic 3 Angular 5 search and sort list of data       public, fork  about 8 years ago
+isisv@DELLPRO16:~/security-lab$ echo "=== Verificação do Ambiente ==="
+echo "Node.js:  $(node --version)"
+echo "npm:      $(npm --version)"
+echo "Git:      $(git --version)"
+echo "Docker:   $(docker --version)"
+echo "gh:       $(gh --version 2>/dev/null || echo 'não instalado (opcional)')"
+echo "nvm:      $(nvm --version 2>/dev/null || echo 'não instalado')"
+echo "==============================="
+=== Verificação do Ambiente ===
+Node.js:  v22.22.2
+npm:      10.9.7
+Git:      git version 2.43.0
+Docker:   Docker version 29.4.0, build 9d7ad9f
+gh:       gh version 2.91.0 (2026-04-22)
+https://github.com/cli/cli/releases/tag/v2.91.0
+nvm:      0.39.7
+===============================
+isisv@DELLPRO16:~/security-lab$ gh repo create devsecops-lab-a2 --public --clone
+cd devsecops-lab-a2
+✓ Created repository isisvsabreu/devsecops-lab-a2 on github.com
+  https://github.com/isisvsabreu/devsecops-lab-a2
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2$ git clone https://github.com/isisvsabreu/devsecops-lab-a2.git
+cd devsecops-lab-a2
+Cloning into 'devsecops-lab-a2'...
+warning: You appear to have cloned an empty repository.
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2$ git clone https://github.com/isisvsabreu/devsecops-lab-a2.git
+cd devsecops-lab-a2
+Cloning into 'devsecops-lab-a2'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (3/3), 9.31 KiB | 3.10 MiB/s, done.
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ ls
+Lab_A2_Pipeline_DevSecOps_GitHub_Actions.md
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ npm init -y
+Wrote to /home/isisv/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2/package.json:
+
+{
+  "name": "devsecops-lab-a2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isisvsabreu/devsecops-lab-a2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isisvsabreu/devsecops-lab-a2/issues"
+  },
+  "homepage": "https://github.com/isisvsabreu/devsecops-lab-a2#readme"
+}
+
+
+
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ npm install express
+npm install --save-dev jest eslint globals supertest
+
+added 65 packages, and audited 66 packages in 1s
+
+22 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+
+added 369 packages, and audited 435 packages in 19s
+
+85 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ mkdir src
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ node .
+node:internal/modules/cjs/loader:510
+      throw err;
+      ^
+
+Error: Cannot find module '/home/isisv/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2/index.js'. Please verify that the package.json has a valid "main" entry
+    at tryPackage (node:internal/modules/cjs/loader:502:19)
+    at Function._findPath (node:internal/modules/cjs/loader:764:18)
+    at resolveMainPath (node:internal/modules/run_main:39:23)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:163:20)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  path: '/home/isisv/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2/package.json',
+  requestPath: '/home/isisv/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2'
+}
+
+Node.js v22.22.2
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ code .
+Command 'code' not found, but can be installed with:
+sudo snap install code
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ code .
+Command 'code' not found, but can be installed with:
+sudo snap install code
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ sudo snap install code
+[sudo] password for isisv:
+error: This revision of snap "code" was published using classic confinement and thus may perform
+       arbitrary system changes outside of the security sandbox that snaps are usually confined to,
+       which may put your system at risk.
+
+       If you understand and want to proceed repeat the command including --classic.
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ node src/server.js
+Server running on port 3000
