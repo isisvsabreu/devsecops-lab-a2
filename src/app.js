@@ -1,5 +1,46 @@
 const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const app = express();
+
+// Security headers — configuração completa
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      frameAncestors: ["'none'"],      // Previne clickjacking (iframe)
+      formAction: ["'self'"],           // Restringe destino de formulários
+    }
+  },
+  permissionsPolicy: {                  // Restringe APIs do navegador
+    features: {
+      camera: ["'none'"],
+      microphone: ["'none'"],
+      geolocation: ["'none'"],
+    }
+  }
+}));
+
+// Remove "X-Powered-By: Express" (information disclosure)
+app.disable('x-powered-by');
+
+// Rate limiting: 100 requests por 15 minutos por IP
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, try again later' }
+}));
+
+// CORS restrito (NÃO usar origin: '*' — é finding MEDIUM no ZAP)
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'https://devsecops-lab-a2.onrender.com',
+  methods: ['GET', 'POST'],
+}));
 
 app.use(express.json());
 const pool = require('./db');
@@ -74,6 +115,11 @@ app.post('/api/messages', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Database error', detail: err.message });
   }
+});
+
+// 404 handler — APÓS todas as rotas
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
 });
 
 module.exports = app;
