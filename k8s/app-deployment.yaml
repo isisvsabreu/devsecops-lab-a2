@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: app
-          image: devsecops-app:local
-          imagePullPolicy: Never       # Imagem carregada via kind load (não puxa de registry)
+          image: devsecops-app:local       # Será substituído no CI
+          imagePullPolicy: IfNotPresent     # Kind usa imagem carregada localmente
           ports:
             - containerPort: 3000
           envFrom:                     # Carrega config do ConfigMap
