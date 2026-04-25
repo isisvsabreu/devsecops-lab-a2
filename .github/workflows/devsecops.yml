@@ -9,6 +9,10 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+permissions:
+  contents: read                      # Leitura do código
+  packages: write                     # Escrita no GHCR
+
 jobs:
   # ============================================
   # Stage 1: Lint (Análise Estática)
@@ -33,12 +37,30 @@ jobs:
         run: npm run lint
 
   # ============================================
-  # Stage 2: Testes Unitários
+  # Stage 2: Semgrep (SAST - Security Analysis)
+  # ============================================
+  semgrep:
+    name: "🔎 Semgrep - SAST"
+    runs-on: ubuntu-latest
+    needs: lint                       # Roda após o lint
+    container:
+      image: semgrep/semgrep          # Imagem oficial do Semgrep
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Semgrep Scan
+        run: semgrep scan --config p/owasp-top-ten --error
+        env:
+          SEMGREP_RULES: p/owasp-top-ten
+
+  # ============================================
+  # Stage 3: Testes Unitários
   # ============================================
   test:
     name: "🧪 Jest - Testes Unitários"
     runs-on: ubuntu-latest
-    needs: lint  # Só roda se o lint passar
+    needs: semgrep  # Só roda se o semgrep passar
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
@@ -63,30 +85,46 @@ jobs:
           path: coverage/
 
   # ============================================
-  # Stage 3: Build Docker
+  # Stage 4: Build Docker
   # ============================================
   build:
-    name: "🐳 Docker Build"
+    name: "🐳 Docker Build + Push"
     runs-on: ubuntu-latest
-    needs: test  # Só roda se os testes passarem
+    needs: test
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Build da imagem Docker
-        run: |
-          docker build -t devsecops-lab-a2:${{ github.sha }} .
-          echo "✅ Imagem construída: devsecops-lab-a2:${{ github.sha }}"
+        run: docker build -t devsecops-lab-a2:${{ github.sha }} .
 
       - name: Verificar tamanho da imagem
         run: |
           docker images devsecops-lab-a2:${{ github.sha }} --format "Tamanho: {{.Size}}"
 
-      - name: Salvar imagem como artefato
-        run: |
-          docker save devsecops-lab-a2:${{ github.sha }} -o image.tar
+      - name: Login no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload da imagem
+      - name: Tag da imagem para GHCR
+        run: |
+          docker tag devsecops-lab-a2:${{ github.sha }} \
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker tag devsecops-lab-a2:${{ github.sha }} \
+            ghcr.io/${{ github.repository }}:latest
+
+      - name: Push para GHCR
+        run: |
+          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}:latest
+
+      - name: Salvar imagem como artefato
+        run: docker save devsecops-lab-a2:${{ github.sha }} -o image.tar
+
+      - name: Upload do artefato
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
@@ -94,7 +132,7 @@ jobs:
           retention-days: 1
 
   # ============================================
-  # Stage 4: Security Scan (Trivy SCA)
+  # Stage 5: Security Scan (Trivy SCA)
   # ============================================
   security-scan:
     name: "🛡️ Trivy - Security Scan"
@@ -139,7 +177,7 @@ jobs:
           format: table
 
   # ============================================
-  # Stage 5: Security Gate
+  # Stage 6: Security Gate
   # ============================================
   security-gate:
     name: "🚨 Security Gate"
