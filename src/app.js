@@ -38,3 +38,6 @@ app.post('/api/validate', (req, res) => {
 });
 
 module.exports = app;
+
+// Código intencionalmente ruim
+eval("console.log('inseguro')");
