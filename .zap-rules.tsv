@@ -1,0 +1,9 @@
+10010	IGNORE	Cookie No HttpOnly Flag (API stateless, sem cookies de sessão)
+10011	IGNORE	Cookie Without Secure Flag (API stateless)
+10015	IGNORE	Re-examine Cache-control Directives
+10049	WARN	Storable and Cacheable Content
+10054	IGNORE	Cookie without SameSite Attribute (API REST)
+10055	WARN	CSP Directive with No Fallback (frame-ancestors, form-action)
+10063	WARN	Permissions Policy Header Not Set
+10098	WARN	Cross-Domain Misconfiguration (CORS)
+10202	IGNORE	Absence of Anti-CSRF Tokens (API REST, não usa formulários)
