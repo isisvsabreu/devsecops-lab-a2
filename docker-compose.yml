@@ -1,0 +1,44 @@
+services:
+
+  # ================================================
+  # Backend Express (nossa aplicação)
+  # ================================================
+  app:
+    build: .                              # Constrói imagem a partir do Dockerfile local
+    ports:
+      - "3000:3000"                       # Mapeia porta 3000 do host para 3000 do container
+    environment:                          # Variáveis de ambiente passadas para o container
+      DB_HOST: postgres                   # Nome do service = hostname DNS automático
+      DB_PORT: 5432                       # Porta padrão do PostgreSQL
+      DB_NAME: devsecops                  # Nome do banco (criado pelo postgres automaticamente)
+      DB_USER: app                        # Usuário do banco
+      DB_PASSWORD: secret                 # Senha (em prod: usar secrets manager)
+    depends_on:                           # Ordem de inicialização
+      postgres:
+        condition: service_healthy        # Só inicia app quando postgres estiver saudável
+    restart: unless-stopped               # Reinicia se crashar (exceto stop manual)
+
+  # ================================================
+  # Banco de dados PostgreSQL
+  # ================================================
+  postgres:
+    image: postgres:16-alpine             # Imagem oficial do Docker Hub (alpine = leve)
+    environment:
+      POSTGRES_DB: devsecops              # Cria este banco no primeiro start
+      POSTGRES_USER: app                  # Cria este usuário
+      POSTGRES_PASSWORD: secret           # Define a senha
+    ports:
+      - "5432:5432"                       # Expõe para ferramentas locais (DBeaver, psql)
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # Dados persistem entre docker compose down/up
+    healthcheck:                          # Verifica se o banco está pronto para conexões
+      test: ["CMD-SHELL", "pg_isready -U app -d devsecops"]
+      interval: 5s                        # Verifica a cada 5 segundos
+      timeout: 3s                         # Timeout de cada verificação
+      retries: 5                          # Marca como unhealthy após 5 falhas
+
+# ================================================
+# Volumes nomeados (gerenciados pelo Docker)
+# ================================================
+volumes:
+  pgdata:                                 # Persiste dados do PostgreSQL no host
