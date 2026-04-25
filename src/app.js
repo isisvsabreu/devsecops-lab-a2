@@ -38,3 +38,9 @@ app.post('/api/validate', (req, res) => {
 });
 
 module.exports = app;
+
+// INSEGURO — SQL injection via concatenação de string
+app.get('/api/search', (req, res) => {
+  const query = "SELECT * FROM messages WHERE text = '" + req.query.q + "'";
+  pool.query(query).then(r => res.json(r.rows));
+});
