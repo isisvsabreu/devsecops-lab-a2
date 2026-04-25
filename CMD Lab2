@@ -257,3 +257,333 @@ error: This revision of snap "code" was published using classic confinement and 
        If you understand and want to proceed repeat the command including --classic.
 isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ node src/server.js
 Server running on port 3000
+
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ mkdir -p .github/workflows
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ cat > .gitignore << 'EOF'
+node_modules/
+coverage/
+*.tar
+.env
+EOF
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git add .
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git commit -m "feat: backend + docker + tests + lint + trivy pipeline"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <isisv@DELLPRO16.localdomain>) not allowed
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git config --global user.name "isisvsabreu"
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git config --global user.email "38441895+isisvsabreu@users.noreply.github.com"
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git config --global --list
+credential.https://github.com.helper=
+credential.https://github.com.helper=!/usr/bin/gh auth git-credential
+credential.https://gist.github.com.helper=
+credential.https://gist.github.com.helper=!/usr/bin/gh auth git-credential
+user.name=isisvsabreu
+user.email=38441895+isisvsabreu@users.noreply.github.com
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git commit -m "feat: backend + docker + tests + lint + trivy pipeline"
+[main d8e900d] feat: backend + docker + tests + lint + trivy pipeline
+ 10 files changed, 6525 insertions(+)
+ create mode 100644 .dockerignore
+ create mode 100644 .github/workflows/devsecops.yml
+ create mode 100644 .gitignore
+ create mode 100644 Dockerfile
+ create mode 100644 eslint.config.mjs
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+ create mode 100644 src/app.js
+ create mode 100644 src/server.js
+ create mode 100644 tests/app.test.js
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git push origin main
+To https://github.com/isisvsabreu/devsecops-lab-a2.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/isisvsabreu/devsecops-lab-a2.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git pull origin main --rebase
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 5.65 KiB | 2.83 MiB/s, done.
+From https://github.com/isisvsabreu/devsecops-lab-a2
+ * branch            main       -> FETCH_HEAD
+   e8ddaaa..43e3aee  main       -> origin/main
+Successfully rebased and updated refs/heads/main.
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ git push origin main
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (12/12), done.
+Writing objects: 100% (16/16), 55.16 KiB | 11.03 MiB/s, done.
+Total 16 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/isisvsabreu/devsecops-lab-a2.git
+   43e3aee..f06ea83  main -> main
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ gh run list
+STATUS  TITLE                            WORKFLOW            BRANCH  EVENT  ID           ELAPSED  AGE
+*       feat: backend + docker + tes...  DevSecOps Pipeline  main    push   24935151828  47s      less than a minute ago
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ gh run watch
+? Select a workflow run * feat: backend + docker + tests + lint + trivy pipeline, DevSecOps Pipeline [main] 53s ago
+✓ main DevSecOps Pipeline · 24935151828
+Triggered via push about 3 minutes ago
+
+JOBS
+✓ 🔍 ESLint - Análise Estática in 13s (ID 73019332068)
+  ✓ Set up job
+  ✓ Checkout do código
+  ✓ Setup Node.js
+  ✓ Instalar dependências
+  ✓ Executar ESLint
+  ✓ Post Setup Node.js
+  ✓ Post Checkout do código
+  ✓ Complete job
+✓ 🧪 Jest - Testes Unitários in 10s (ID 73019344871)
+  ✓ Set up job
+  ✓ Checkout do código
+  ✓ Setup Node.js
+  ✓ Instalar dependências
+  ✓ Executar testes com cobertura
+  ✓ Upload do relatório de cobertura
+  ✓ Post Setup Node.js
+  ✓ Post Checkout do código
+  ✓ Complete job
+✓ 🐳 Docker Build in 16s (ID 73019355227)
+  ✓ Set up job
+  ✓ Checkout do código
+  ✓ Build da imagem Docker
+  ✓ Verificar tamanho da imagem
+  ✓ Salvar imagem como artefato
+  ✓ Upload da imagem
+  ✓ Post Checkout do código
+  ✓ Complete job
+✓ 🛡️ Trivy - Security Scan in 33s (ID 73019368552)
+  ✓ Set up job
+  ✓ Checkout do código
+  ✓ Download da imagem Docker
+  ✓ Carregar imagem Docker
+  ✓ Trivy: Scan de dependências (SCA)
+  ✓ Trivy: Secret Scanning
+  ✓ Trivy: Scan da imagem Docker
+  ✓ Post Trivy: Scan da imagem Docker
+  ✓ Post Trivy: Secret Scanning
+  ✓ Post Trivy: Scan de dependências (SCA)
+  ✓ Post Checkout do código
+  ✓ Complete job
+✓ 🚨 Security Gate in 14s (ID 73019399222)
+  ✓ Set up job
+  ✓ Checkout do código
+  ✓ Gate: Bloquear se CRITICAL encontrado
+  ✓ ✅ Pipeline aprovado
+  ✓ Post Gate: Bloquear se CRITICAL encontrado
+  ✓ Post Checkout do código
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+🔍 ESLint - Análise Estática: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+🧪 Jest - Testes Unitários: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+🐳 Docker Build: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+🛡️ Trivy - Security Scan: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+🚨 Security Gate: .github#2
+
+
+✓ Run DevSecOps Pipeline (24935151828) completed with 'success'
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$ gh run view --log
+? Select a workflow run ✓ feat: backend + docker + tests + lint + trivy pipeline, DevSecOps Pipeline [main] 4m2s ago
+? View a specific job in this run? ✓ 🔍 ESLint - Análise Estática
+🔍 ESLint - Análise Estática    Set up job      ﻿2026-04-25T16:17:16.1461553Z Current runner version: '2.333.1'
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1496358Z ##[group]Runner Image Provisioner
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1497512Z Hosted Compute Agent
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1498675Z Version: 20260213.493
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1499581Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1500577Z Build Date: 2026-02-13T00:28:41Z
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1501670Z Worker ID: {b32b8e6c-7e35-4175-b5a5-a326b7fb1035}
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1502699Z Azure Region: eastus
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1503425Z ##[endgroup]
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1505695Z ##[group]Operating System
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1506561Z Ubuntu
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1507226Z 24.04.4
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1507870Z LTS
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1508770Z ##[endgroup]
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1509442Z ##[group]Runner Image
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1510457Z Image: ubuntu-24.04
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1511231Z Version: 20260413.86.1
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1512804Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1515379Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1516946Z ##[endgroup]
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1518858Z ##[group]GITHUB_TOKEN Permissions
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1521379Z Contents: read
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1522133Z Metadata: read
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1522875Z Packages: read
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1523735Z ##[endgroup]
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1526670Z Secret source: Actions
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.1527636Z Prepare workflow directory
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.2068490Z Prepare all required actions
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.2123030Z Getting action download info
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.4469775Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.5651946Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+🔍 ESLint - Análise Estática    Set up job      2026-04-25T16:17:16.7520081Z Complete job name: 🔍 ESLint - Análise Estática
+🔍 ESLint - Análise Estática    Checkout do código      ﻿2026-04-25T16:17:16.8182305Z ##[group]Run actions/checkout@v4
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8183110Z with:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8183523Z   repository: isisvsabreu/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8184239Z   token: ***
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8184622Z   ssh-strict: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8184999Z   ssh-user: git
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8185393Z   persist-credentials: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8185814Z   clean: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8186205Z   sparse-checkout-cone-mode: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8186671Z   fetch-depth: 1
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8187066Z   fetch-tags: false
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8187455Z   show-progress: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8187857Z   lfs: false
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8188618Z   submodules: false
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8189029Z   set-safe-directory: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8189709Z env:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8190098Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.8190605Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9136848Z Syncing repository: isisvsabreu/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9139586Z ##[group]Getting Git version info
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9140464Z Working directory is '/home/runner/work/devsecops-lab-a2/devsecops-lab-a2'
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9141562Z [command]/usr/bin/git version
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9156106Z git version 2.53.0
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9207338Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9220801Z Temporarily overriding HOME='/home/runner/work/_temp/1fc9fd1e-ffc4-42e0-b1a6-0f1e1b45c8a0' before making global git config changes
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9222510Z Adding repository directory to the temporary git global config as a safe directory
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9225182Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/devsecops-lab-a2/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9259567Z Deleting the contents of '/home/runner/work/devsecops-lab-a2/devsecops-lab-a2'
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9263360Z ##[group]Initializing the repository
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9267494Z [command]/usr/bin/git init /home/runner/work/devsecops-lab-a2/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9327363Z hint: Using 'master' as the name for the initial branch. This default branch name
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9329500Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9331086Z hint: to use in all of your new repositories, which will suppress this warning,
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9331966Z hint: call:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9332477Z hint:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9333096Z hint:      git config --global init.defaultBranch <name>
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9333813Z hint:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9334486Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9335497Z hint: 'development'. The just-created branch can be renamed via this command:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9336485Z hint:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9337013Z hint:      git branch -m <name>
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9337720Z hint:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9338779Z hint: Disable this message with "git config set advice.defaultBranchName false"
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9340578Z Initialized empty Git repository in /home/runner/work/devsecops-lab-a2/devsecops-lab-a2/.git/
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9343624Z [command]/usr/bin/git remote add origin https://github.com/isisvsabreu/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9369516Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9370251Z ##[group]Disabling automatic garbage collection
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9373495Z [command]/usr/bin/git config --local gc.auto 0
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9402750Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9409439Z ##[group]Setting up auth
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9410517Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9443118Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9729349Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9760387Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:16.9984574Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.0015538Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.0246721Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.0280969Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.0281880Z ##[group]Fetching the repository
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.0289336Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f06ea83a691541321c421249d74b0f616c5f0b36:refs/remotes/origin/main
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2028765Z From https://github.com/isisvsabreu/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2030672Z  * [new ref]         f06ea83a691541321c421249d74b0f616c5f0b36 -> origin/main
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2060506Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2061577Z ##[group]Determining the checkout info
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2063849Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2070341Z [command]/usr/bin/git sparse-checkout disable
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2110293Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2137417Z ##[group]Checking out the ref
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2141061Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2196916Z Switched to a new branch 'main'
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2200083Z branch 'main' set up to track 'origin/main'.
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2210656Z ##[endgroup]
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2250676Z [command]/usr/bin/git log -1 --format=%H
+🔍 ESLint - Análise Estática    Checkout do código      2026-04-25T16:17:17.2276206Z f06ea83a691541321c421249d74b0f616c5f0b36
+🔍 ESLint - Análise Estática    Setup Node.js   ﻿2026-04-25T16:17:17.2533527Z ##[group]Run actions/setup-node@v4
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2534034Z with:
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2534398Z   node-version: 22
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2534768Z   cache: npm
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2535125Z   always-auth: false
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2535509Z   check-latest: false
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2536233Z   token: ***
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2536578Z env:
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2536943Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.2537446Z ##[endgroup]
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.3878791Z Found in cache @ /opt/hostedtoolcache/node/22.22.2/x64
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.3883592Z (node:2287) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.3885383Z (Use `node --trace-deprecation ...` to show where the warning was created)
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:17.3886874Z ##[group]Environment details
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.1923856Z node: v22.22.2
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.1924430Z npm: 10.9.7
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.1924711Z yarn: 1.22.22
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.1925538Z ##[endgroup]
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.1950361Z [command]/opt/hostedtoolcache/node/22.22.2/x64/bin/npm config get cache
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.4245663Z /home/runner/.npm
+🔍 ESLint - Análise Estática    Setup Node.js   2026-04-25T16:17:21.4924016Z npm cache is not found
+🔍 ESLint - Análise Estática    Instalar dependências   ﻿2026-04-25T16:17:21.5049160Z ##[group]Run npm ci
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:21.5049535Z npm ci
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:21.5082026Z shell: /usr/bin/bash -e {0}
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:21.5082351Z env:
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:21.5082607Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:21.5082915Z ##[endgroup]
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:24.1879260Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:24.9768962Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:25.2963153Z npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0754084Z
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0755041Z added 436 packages, and audited 437 packages in 5s
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0755709Z
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0756002Z 86 packages are looking for funding
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0756526Z   run `npm fund` for details
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0764753Z
+🔍 ESLint - Análise Estática    Instalar dependências   2026-04-25T16:17:26.0765390Z found 0 vulnerabilities
+🔍 ESLint - Análise Estática    Executar ESLint ﻿2026-04-25T16:17:26.1303823Z ##[group]Run npm run lint
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.1304118Z npm run lint
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.1331987Z shell: /usr/bin/bash -e {0}
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.1332263Z env:
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.1332481Z   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.1332776Z ##[endgroup]
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.2491592Z
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.2492208Z > devsecops-lab-a2@1.0.0 lint
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.2492784Z > eslint src/ tests/
+🔍 ESLint - Análise Estática    Executar ESLint 2026-04-25T16:17:26.2493020Z
+🔍 ESLint - Análise Estática    Post Setup Node.js      ﻿2026-04-25T16:17:26.7740122Z Post job cleanup.
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:26.8943318Z (node:2379) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:26.8944699Z (Use `node --trace-deprecation ...` to show where the warning was created)
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:26.9129581Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/devsecops-lab-a2/devsecops-lab-a2 --files-from manifest.txt --use-compress-program zstdmt
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:27.0725236Z (node:2379) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:27.3635661Z Sent 12594023 of 12594023 (100.0%), 40.2 MBs/sec
+🔍 ESLint - Análise Estática    Post Setup Node.js      2026-04-25T16:17:27.4399069Z Cache saved with the key: node-cache-Linux-x64-npm-b73a73c08e0200315660693b7c10f9d82b7d785e597d1308732e6512d3a2bb1b
+🔍 ESLint - Análise Estática    Post Checkout do código ﻿2026-04-25T16:17:27.4547670Z Post job cleanup.
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5407562Z [command]/usr/bin/git version
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5444021Z git version 2.53.0
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5478649Z Temporarily overriding HOME='/home/runner/work/_temp/76d7dde8-9319-4aaf-9e6a-85adcdd8b183' before making global git config changes
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5480076Z Adding repository directory to the temporary git global config as a safe directory
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5483591Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/devsecops-lab-a2/devsecops-lab-a2
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5519062Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5554880Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5788396Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5811007Z http.https://github.com/.extraheader
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5821315Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.5853520Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.6079176Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+🔍 ESLint - Análise Estática    Post Checkout do código 2026-04-25T16:17:27.6110209Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+🔍 ESLint - Análise Estática    Complete job    ﻿2026-04-25T16:17:27.8413963Z Cleaning up orphan processes
+🔍 ESLint - Análise Estática    Complete job    2026-04-25T16:17:27.8703492Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+isisv@DELLPRO16:~/security-lab/devsecops-lab-a2/devsecops-lab-a2/devsecops-lab-a2$
