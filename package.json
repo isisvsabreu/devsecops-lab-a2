@@ -1,0 +1,32 @@
+{
+  "name": "devsecops-lab-a2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest --verbose --coverage",
+    "lint": "eslint src/ tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isisvsabreu/devsecops-lab-a2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isisvsabreu/devsecops-lab-a2/issues"
+  },
+  "homepage": "https://github.com/isisvsabreu/devsecops-lab-a2#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^10.2.1",
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.5.0",
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
+  }
+}

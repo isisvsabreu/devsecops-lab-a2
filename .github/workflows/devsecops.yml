@@ -1,0 +1,172 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # ============================================
+  # Stage 1: Lint (Análise Estática)
+  # ============================================
+  lint:
+    name: "🔍 ESLint - Análise Estática"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar ESLint
+        run: npm run lint
+
+  # ============================================
+  # Stage 2: Testes Unitários
+  # ============================================
+  test:
+    name: "🧪 Jest - Testes Unitários"
+    runs-on: ubuntu-latest
+    needs: lint  # Só roda se o lint passar
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes com cobertura
+        run: npm test
+
+      - name: Upload do relatório de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+  # ============================================
+  # Stage 3: Build Docker
+  # ============================================
+  build:
+    name: "🐳 Docker Build"
+    runs-on: ubuntu-latest
+    needs: test  # Só roda se os testes passarem
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Build da imagem Docker
+        run: |
+          docker build -t devsecops-lab-a2:${{ github.sha }} .
+          echo "✅ Imagem construída: devsecops-lab-a2:${{ github.sha }}"
+
+      - name: Verificar tamanho da imagem
+        run: |
+          docker images devsecops-lab-a2:${{ github.sha }} --format "Tamanho: {{.Size}}"
+
+      - name: Salvar imagem como artefato
+        run: |
+          docker save devsecops-lab-a2:${{ github.sha }} -o image.tar
+
+      - name: Upload da imagem
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: image.tar
+          retention-days: 1
+
+  # ============================================
+  # Stage 4: Security Scan (Trivy SCA)
+  # ============================================
+  security-scan:
+    name: "🛡️ Trivy - Security Scan"
+    runs-on: ubuntu-latest
+    needs: build  # Só roda após o build
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Download da imagem Docker
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Carregar imagem Docker
+        run: docker load -i image.tar
+
+      # Scan de dependências (filesystem)
+      - name: "Trivy: Scan de dependências (SCA)"
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          format: table
+
+      # Scan de secrets (credenciais hardcoded)
+      - name: "Trivy: Secret Scanning"
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: secret
+          exit-code: 1
+
+      # Scan da imagem Docker
+      - name: "Trivy: Scan da imagem Docker"
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: devsecops-lab-a2:${{ github.sha }}
+          severity: HIGH,CRITICAL
+          format: table
+
+  # ============================================
+  # Stage 5: Security Gate
+  # ============================================
+  security-gate:
+    name: "🚨 Security Gate"
+    runs-on: ubuntu-latest
+    needs: security-scan
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: "Gate: Bloquear se CRITICAL encontrado"
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL
+          exit-code: 1
+          format: table
+
+      - name: "✅ Pipeline aprovado"
+        if: success()
+        run: |
+          echo "========================================="
+          echo "  ✅ PIPELINE DEVSECOPS APROVADO"
+          echo "  Todos os checks passaram:"
+          echo "    ✓ Lint (ESLint)"
+          echo "    ✓ Testes unitários (Jest)"
+          echo "    ✓ Build Docker"
+          echo "    ✓ Security Scan (Trivy)"
+          echo "    ✓ Security Gate (sem CRITICAL)"
+          echo "========================================="
