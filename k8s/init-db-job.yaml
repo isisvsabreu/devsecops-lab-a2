@@ -1,0 +1,30 @@
+# Job: executa uma tarefa uma vez e termina
+# Ideal para: migrations, seeds, backups
+# Diferente do Deployment: não fica rodando, termina com sucesso ou falha
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-db
+spec:
+  backoffLimit: 3                     # Tenta 3 vezes se falhar
+  template:
+    spec:
+      restartPolicy: Never            # Não reinicia o pod se falhar (Job gerencia retries)
+      containers:
+        - name: init-db
+          image: devsecops-app:local  # Mesma imagem da app (tem o script init-db.js)
+          command: ["node", "src/init-db.js"]  # Sobrescreve o CMD do Dockerfile
+          envFrom:                    # Carrega TODAS as variáveis do ConfigMap
+            - configMapRef:
+                name: app-config
+          env:                        # Variáveis do Secret (individualmente)
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD

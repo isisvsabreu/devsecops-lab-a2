@@ -1,0 +1,13 @@
+# Service: endereço estável para acessar a aplicação
+# Load balancing automático entre as 2 réplicas
+apiVersion: v1
+kind: Service
+metadata:
+  name: devsecops-svc
+spec:
+  selector:
+    app: devsecops                    # Roteia para pods com label app=devsecops
+  ports:
+    - port: 80                        # Porta do Service (externa)
+      targetPort: 3000                # Porta do container
+  type: ClusterIP                     # Acesso interno (usaremos port-forward)

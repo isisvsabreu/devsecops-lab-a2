@@ -1,0 +1,14 @@
+# Service: endereço de rede estável para o PostgreSQL
+# Pods são efêmeros (IP muda). Service é fixo.
+# O nome do Service vira hostname DNS: postgres-svc
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc                  # Este nome vira DNS interno (= DB_HOST no ConfigMap)
+spec:
+  selector:
+    app: postgres                     # Roteia tráfego para pods com label app=postgres
+  ports:
+    - port: 5432                      # Porta do Service
+      targetPort: 5432                # Porta do container
+  type: ClusterIP                     # Acesso interno ao cluster (padrão)

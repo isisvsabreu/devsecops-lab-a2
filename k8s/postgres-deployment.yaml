@@ -1,0 +1,40 @@
+# Deployment: gerencia pods do PostgreSQL
+# Garante que o número de réplicas esteja rodando
+# Se o pod morrer, o Deployment recria automaticamente
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1                         # Banco de dados: 1 réplica (stateful)
+  selector:
+    matchLabels:
+      app: postgres                   # Seleciona pods com este label
+  template:                           # Template do Pod que será criado
+    metadata:
+      labels:
+        app: postgres                 # Label do pod (usado pelo selector e pelo Service)
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine   # Imagem oficial do PostgreSQL
+          ports:
+            - containerPort: 5432     # Porta que o PostgreSQL escuta
+          env:                        # Variáveis de ambiente diretas
+            - name: POSTGRES_DB
+              value: devsecops
+            - name: POSTGRES_USER     # Pega do Secret
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD # Pega do Secret
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+          readinessProbe:             # K8s verifica se o pod está pronto
+            exec:
+              command: ["pg_isready", "-U", "app", "-d", "devsecops"]
+            initialDelaySeconds: 5
+            periodSeconds: 5

@@ -1,0 +1,20 @@
+# NetworkPolicy: restringe tráfego de rede entre pods
+# Por padrão, todos os pods falam com todos (inseguro!)
+# Esta policy: postgres só aceita conexões da app
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-postgres
+spec:
+  podSelector:
+    matchLabels:
+      app: postgres                   # Aplica ao pod do PostgreSQL
+  policyTypes:
+    - Ingress                         # Restringe tráfego de ENTRADA
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: devsecops          # Só pods com label app=devsecops podem acessar
+      ports:
+        - port: 5432                  # Apenas na porta do PostgreSQL

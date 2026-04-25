@@ -1,0 +1,51 @@
+# Deployment: gerencia pods da aplicação Express
+# 2 réplicas: se um pod morre, K8s recria. Load balancing automático.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsecops-app
+spec:
+  replicas: 2                         # 2 instâncias (alta disponibilidade)
+  selector:
+    matchLabels:
+      app: devsecops
+  template:
+    metadata:
+      labels:
+        app: devsecops
+    spec:
+      containers:
+        - name: app
+          image: devsecops-app:local
+          imagePullPolicy: Never       # Imagem carregada via kind load (não puxa de registry)
+          ports:
+            - containerPort: 3000
+          envFrom:                     # Carrega config do ConfigMap
+            - configMapRef:
+                name: app-config
+          env:                         # Credenciais do Secret
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+          securityContext:              # Segurança a nível de Container
+            allowPrivilegeEscalation: false   # Não pode escalar privilégios
+            readOnlyRootFilesystem: true      # Filesystem read-only
+          livenessProbe:               # K8s reinicia o pod se falhar
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:              # K8s só envia tráfego quando pronto
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5

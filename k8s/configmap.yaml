@@ -1,0 +1,10 @@
+# ConfigMap: armazena configuração não-sensível
+# Equivalente Compose: environment: no docker-compose.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config                    # Nome para referenciar em outros recursos
+data:
+  DB_HOST: postgres-svc               # Nome do Service do PostgreSQL (DNS interno do K8s)
+  DB_PORT: "5432"                     # Porta do PostgreSQL (string no ConfigMap)
+  DB_NAME: devsecops                  # Nome do banco de dados
