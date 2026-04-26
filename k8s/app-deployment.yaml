@@ -16,6 +16,20 @@ spec:
     spec:
       containers:
         - name: app
+          securityContext:              # Segurança a nível de Container
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false   # Não pode escalar privilégios
+            readOnlyRootFilesystem: true     # Filesystem read-only
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
           image: devsecops-app:local       # Será substituído no CI
           imagePullPolicy: IfNotPresent     # Kind usa imagem carregada localmente
           ports:
@@ -41,10 +55,6 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: DB_PASSWORD
-          securityContext:              # Segurança a nível de Container
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false   # Não pode escalar privilégios
-            readOnlyRootFilesystem: false     # Filesystem read-only
           livenessProbe:               # K8s reinicia o pod se falhar
             httpGet:
               path: /health
@@ -57,3 +67,6 @@ spec:
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 5
+      volumes:
+        - name: tmp
+          emptyDir: {}
