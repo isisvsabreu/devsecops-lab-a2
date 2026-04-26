@@ -210,7 +210,7 @@ jobs:
           scan-type: config
           scan-ref: '.'
           severity: HIGH,CRITICAL
-          exit-code: '0'
+          exit-code: '1'
 
   # ============================================
   # Stage 7: Security Gate
