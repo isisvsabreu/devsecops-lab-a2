@@ -261,6 +261,8 @@ jobs:
         uses: helm/kind-action@v1
         with:
           cluster_name: devsecops
+          version: v0.29.0
+          wait: 60s
 
       - name: Pull image do GHCR
         run: |
