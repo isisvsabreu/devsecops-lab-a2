@@ -14,10 +14,13 @@ spec:
       labels:
         app: devsecops
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: app
           securityContext:              # Segurança a nível de Container
-            runAsNonRoot: true
             runAsUser: 10001
             runAsGroup: 10001
             allowPrivilegeEscalation: false   # Não pode escalar privilégios
@@ -25,8 +28,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-            seccompProfile:
-              type: RuntimeDefault
           volumeMounts:
             - name: tmp
               mountPath: /tmp

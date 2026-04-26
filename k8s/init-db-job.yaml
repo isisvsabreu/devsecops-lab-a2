@@ -10,10 +10,13 @@ spec:
   template:
     spec:
       restartPolicy: Never            # Não reinicia o pod se falhar (Job gerencia retries)
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: init-db
           securityContext:              # Segurança a nível de Container
-            runAsNonRoot: true
             runAsUser: 10001
             runAsGroup: 10001
             allowPrivilegeEscalation: false   # Não pode escalar privilégios
@@ -21,8 +24,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-            seccompProfile:
-              type: RuntimeDefault
           volumeMounts:
             - name: tmp
               mountPath: /tmp
