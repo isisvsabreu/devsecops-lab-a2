@@ -133,7 +133,33 @@ jobs:
           retention-days: 1
 
   # ============================================
-  # Stage 5: Security Scan (Trivy SCA)
+  # Stage 5: Generate SBOM
+  # ============================================
+  sbom:
+    name: "📋 Generate SBOM"
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate SBOM with Syft
+        uses: anchore/sbom-action@v0
+        with:
+          image: ghcr.io/${{ github.repository }}:latest
+          format: cyclonedx-json
+          artifact-name: sbom.cyclonedx.json
+
+  # ============================================
+  # Stage 6: Security Scan (Trivy SCA)
   # ============================================
   security-scan:
     name: "🛡️ Trivy - Security Scan"
@@ -176,9 +202,18 @@ jobs:
           image-ref: devsecops-lab-a2:${{ github.sha }}
           severity: HIGH,CRITICAL
           format: table
+      
+      # IaC Scan (Dockerfile + K8s manifests)
+      - name: "🏗️ Trivy: IaC Scan"
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: config
+          scan-ref: '.'
+          severity: HIGH,CRITICAL
+          exit-code: '0'
 
   # ============================================
-  # Stage 6: Security Gate
+  # Stage 7: Security Gate
   # ============================================
   security-gate:
     name: "🚨 Security Gate"
@@ -211,7 +246,7 @@ jobs:
           echo "========================================="
 
   # ============================================
-  # Stage 7: Deploy K8s (Kind)
+  # Stage 8: Deploy K8s (Kind)
   # ============================================
   deploy-k8s:
     name: "🚀 Deploy K8s (Kind)"
@@ -289,7 +324,7 @@ jobs:
           echo "✅ Endpoint tests passed"
 
   # ============================================
-  # Stage 8: Deploy Render (PaaS)
+  # Stage 9: Deploy Render (PaaS)
   # ============================================
   deploy-render:
     name: "🚀 Deploy Render"
@@ -321,7 +356,7 @@ jobs:
           exit 1
 
   # ============================================
-  # Stage 9: DAST (OWASP ZAP Baseline)
+  # Stage 10: DAST (OWASP ZAP Baseline)
   # ============================================
   dast:
     name: "🔍 ZAP Baseline Scan"
