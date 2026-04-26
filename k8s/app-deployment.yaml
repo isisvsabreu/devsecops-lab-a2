@@ -20,6 +20,13 @@ spec:
           imagePullPolicy: IfNotPresent     # Kind usa imagem carregada localmente
           ports:
             - containerPort: 3000
+          resources:                    # ← NOVO
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
           envFrom:                     # Carrega config do ConfigMap
             - configMapRef:
                 name: app-config
@@ -35,8 +42,9 @@ spec:
                   name: db-credentials
                   key: DB_PASSWORD
           securityContext:              # Segurança a nível de Container
+            runAsNonRoot: true
             allowPrivilegeEscalation: false   # Não pode escalar privilégios
-            readOnlyRootFilesystem: true      # Filesystem read-only
+            readOnlyRootFilesystem: false     # Filesystem read-only
           livenessProbe:               # K8s reinicia o pod se falhar
             httpGet:
               path: /health
