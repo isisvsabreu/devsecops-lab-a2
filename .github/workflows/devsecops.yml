@@ -277,10 +277,10 @@ jobs:
 
       - name: Deploy manifests K8s
         run: |
-          kubectl apply -f k8s/configmap.yaml
           kubectl apply -f k8s/secret.yaml
-          kubectl apply -f k8s/postgres-deployment.yaml
+          kubectl apply -f k8s/configmap.yaml
           kubectl apply -f k8s/postgres-service.yaml
+          kubectl apply -f k8s/postgres-deployment.yaml
           kubectl apply -f k8s/app-deployment.yaml
           kubectl apply -f k8s/app-service.yaml
           echo "All manifests applied"

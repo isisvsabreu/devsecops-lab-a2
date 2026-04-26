@@ -17,13 +17,14 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
         seccompProfile:
           type: RuntimeDefault
       containers:
         - name: postgres
           securityContext:
-            runAsUser: 70
-            runAsGroup: 70
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -59,6 +60,8 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: DB_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           readinessProbe:             # K8s verifica se o pod está pronto
             exec:
               command: ["pg_isready", "-U", "app", "-d", "devsecops"]
